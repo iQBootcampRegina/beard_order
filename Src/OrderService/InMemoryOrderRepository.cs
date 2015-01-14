@@ -36,9 +36,6 @@ namespace OrderService
 		{
 			var match = _orders.SingleOrDefault(x => x.Id == id);
 
-			if (match == null)
-				throw new OrderNotFoundException();
-
 			return match;
 		}
 
