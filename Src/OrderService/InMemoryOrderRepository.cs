@@ -13,15 +13,26 @@ namespace OrderService
 			_orders = new List<Order>();
 		}
 
+		int GetNextId()
+		{
+			if (!_orders.Any())
+				return 1;
+
+			var max = _orders.Max(x => x.Id);
+
+			return max + 1;
+		}
+
 		public void CreateOrder(Order input)
 		{
-			input.Id = Guid.NewGuid();
+			input.Id = GetNextId();
+
 			input.State = OrderState.New;
 			
 			_orders.Add(input);
 		}
 
-		public Order GetOrderById(Guid id)
+		public Order GetOrderById(int id)
 		{
 			var match = _orders.SingleOrDefault(x => x.Id == id);
 
@@ -36,18 +47,11 @@ namespace OrderService
 			return _orders.Where(x => x.State == state);
 		}
 
-		public void UpdateOrder(Guid id, OrderState state)
+		public void UpdateOrder(int id, OrderState state)
 		{
 			var match = GetOrderById(id);
 
 			match.State = state;
-		}
-
-		public void DeleteOrder(Guid id)
-		{
-			var match = GetOrderById(id);
-
-			_orders.Remove(match);
 		}
 	}
 }

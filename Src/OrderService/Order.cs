@@ -9,7 +9,7 @@ namespace OrderService
 		{
 			Items = new List<OrderItem>();
 		}
-		public Guid Id { get; set; }
+		public int Id { get; set; }
 
 		public string CustomerName { get; set; }
 

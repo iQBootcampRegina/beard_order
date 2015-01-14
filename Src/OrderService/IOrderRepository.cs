@@ -7,11 +7,9 @@ namespace OrderService
 	{
 		void CreateOrder(Order input);
 
-		Order GetOrderById(Guid id);
+		Order GetOrderById(int id);
 		IEnumerable<Order> GetOrderByState(OrderState state);
 
-		void UpdateOrder(Guid id, OrderState state);
-
-		void DeleteOrder(Guid id);
+		void UpdateOrder(int id, OrderState state);
 	}
 }

@@ -26,7 +26,7 @@ namespace OrderService
 			return Negotiate.WithStatusCode(HttpStatusCode.Created);
 		}
 
-		object GetOrderById(Guid id)
+		object GetOrderById(int id)
 		{
 			return _orderRepository.GetOrderById(id);
 		}
