@@ -11,19 +11,10 @@ namespace OrderService
 
 		public OrderModule()
 		{
+			Post["/orders"] = x => CreateOrder();
 			Get["/orders/{id}"] = x => GetOrderById(x.id);
 			Get["/orders"] = x => GetOrders();
-			Post["/orders"] = x => CreateOrder();
 			Put["/orders/{id}"] = x => UpdateOrder();
-		}
-
-		object UpdateOrder()
-		{
-			var inputOrder = this.Bind<Order>();
-
-			_orderRepository.UpdateOrder(inputOrder);
-
-			return Negotiate.WithStatusCode(HttpStatusCode.OK);
 		}
 
 		object CreateOrder()
@@ -50,6 +41,15 @@ namespace OrderService
 			return _orderRepository.GetOrderByState(enumValue.Value);
 		}
 
+		object UpdateOrder()
+		{
+			var inputOrder = this.Bind<Order>();
+
+			_orderRepository.UpdateOrder(inputOrder.Id, inputOrder.State);
+
+			return Negotiate.WithStatusCode(HttpStatusCode.OK);
+		}
+
 		OrderState? GetStateFromFilter()
 		{
 			var filter = Request.Query["$filter"];
@@ -72,11 +72,17 @@ namespace OrderService
 
 			string strReplace = @"${Value}";
 
-			var result = myRegex.Replace(filter, strReplace);
+			var resource = myRegex.Replace(filter, "${Resource}");
+			var op = myRegex.Replace(filter, "${Operator}");
+			var value = myRegex.Replace(filter, "${Value}");
+
+			if (!string.Equals(resource, "State", StringComparison.InvariantCultureIgnoreCase) || 
+							!string.Equals(op, "eq", StringComparison.InvariantCultureIgnoreCase))
+				return null;
 
 			OrderState enumValue;
 
-			var valid = Enum.TryParse(result, true, out enumValue);
+			var valid = Enum.TryParse(value, true, out enumValue);
 
 			if (!valid)
 				return null;

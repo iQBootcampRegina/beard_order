@@ -36,11 +36,11 @@ namespace OrderService
 			return _orders.Where(x => x.State == state);
 		}
 
-		public void UpdateOrder(Order input)
+		public void UpdateOrder(Guid id, OrderState state)
 		{
-			var match = GetOrderById(input.Id);
+			var match = GetOrderById(id);
 
-			match.State = input.State;
+			match.State = state;
 		}
 
 		public void DeleteOrder(Guid id)

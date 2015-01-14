@@ -10,7 +10,7 @@ namespace OrderService
 		Order GetOrderById(Guid id);
 		IEnumerable<Order> GetOrderByState(OrderState state);
 
-		void UpdateOrder(Order input);
+		void UpdateOrder(Guid id, OrderState state);
 
 		void DeleteOrder(Guid id);
 	}
