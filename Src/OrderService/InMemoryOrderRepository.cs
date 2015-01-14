@@ -31,9 +31,9 @@ namespace OrderService
 			return match;
 		}
 
-		public IEnumerable<Order> GetPendingOrders()
+		public IEnumerable<Order> GetOrderByState(OrderState state)
 		{
-			return _orders.Where(x => x.State == OrderState.New);
+			return _orders.Where(x => x.State == state);
 		}
 
 		public void UpdateOrder(Order input)

@@ -8,7 +8,7 @@ namespace OrderService
 		void CreateOrder(Order input);
 
 		Order GetOrderById(Guid id);
-		IEnumerable<Order> GetPendingOrders();
+		IEnumerable<Order> GetOrderByState(OrderState state);
 
 		void UpdateOrder(Order input);
 
