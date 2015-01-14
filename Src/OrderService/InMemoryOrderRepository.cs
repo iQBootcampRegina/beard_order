@@ -1,0 +1,53 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace OrderService
+{
+	public class InMemoryOrderRepository : IOrderRepository
+	{
+		readonly IList<Order> _orders;
+
+		public InMemoryOrderRepository()
+		{
+			_orders = new List<Order>();
+		}
+
+		public void CreateOrder(Order input)
+		{
+			input.Id = Guid.NewGuid();
+			input.State = OrderState.New;
+			
+			_orders.Add(input);
+		}
+
+		public Order GetOrderById(Guid id)
+		{
+			var match = _orders.SingleOrDefault(x => x.Id == id);
+
+			if (match == null)
+				throw new OrderNotFoundException();
+
+			return match;
+		}
+
+		public IEnumerable<Order> GetPendingOrders()
+		{
+			return _orders.Where(x => x.State == OrderState.New);
+		}
+
+		public void UpdateOrder(Order input)
+		{
+			var match = GetOrderById(input.Id);
+
+			match.State = input.State;
+		}
+
+		public void DeleteOrder(Guid id)
+		{
+			var match = GetOrderById(id);
+
+			_orders.Remove(match);
+		}
+	}
+}

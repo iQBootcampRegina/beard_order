@@ -1,35 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using Nancy;
+using Nancy.ModelBinding;
 
 namespace OrderService
 {
-	public enum OrderState
-	{
-		New,
-		InProgress,
-		Shipped,
-		Error
-	}
-
-	public class Order
-	{
-		public Guid Id { get; set; }
-
-		public string CustomerName { get; set; }
-
-		public string CustomerAddress { get; set; }
-
-		public IEnumerable<int> ItemIds { get; set; }
-
-		public OrderState State { get; set; }
-	}
-
 	public class OrderModule : NancyModule
 	{
+		static readonly IOrderRepository _orderRepository = new InMemoryOrderRepository();
+
 		public OrderModule()
 		{
-			Get["/orders/{id}"] = x => new Order() { Id = x.id, CustomerName = "Bob Smith"};
+			Get["/orders/{id}"] = x => GetOrderById(x.id);
+			Get["/orders"] = x => GetOrders();
+			Post["/orders"] = x => CreateOrder();
+		}
+
+		object CreateOrder()
+		{
+			var inputOrder = this.Bind<Order>();
+
+			_orderRepository.CreateOrder(inputOrder);
+
+			return Negotiate.WithStatusCode(HttpStatusCode.Created);
+		}
+
+		object GetOrderById(Guid id)
+		{
+			return _orderRepository.GetOrderById(id);
+		}
+
+		object GetOrders()
+		{
+			return _orderRepository.GetPendingOrders();
 		}
 	}
 }

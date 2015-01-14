@@ -66,7 +66,11 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InMemoryOrderRepository.cs" />
+    <Compile Include="IOrderRepository.cs" />
+    <Compile Include="Order.cs" />
     <Compile Include="OrderModule.cs" />
+    <Compile Include="OrderNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
