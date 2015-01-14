@@ -7,10 +7,14 @@ namespace OrderService
 {
 	public class OrderModule : NancyModule
 	{
-		static readonly IOrderRepository _orderRepository = new InMemoryOrderRepository();
+		readonly IOrderRepository _orderRepository;
+		readonly IMapper<string, OrderState?> _orderStateMapper;
 
-		public OrderModule()
+		public OrderModule(IOrderRepository orderRepository, IMapper<string, OrderState?> orderStateMapper)
 		{
+			_orderRepository = orderRepository;
+			_orderStateMapper = orderStateMapper;
+
 			Post["/orders"] = x => CreateOrder();
 			Get["/orders/{id}"] = x => GetOrderById(x.id);
 			Get["/orders"] = x => GetOrders();
@@ -33,7 +37,7 @@ namespace OrderService
 
 		object GetOrders()
 		{
-			var enumValue = GetStateFromFilter();
+			OrderState? enumValue = _orderStateMapper.Map(Request.Query["$filter"]);
 
 			if (!enumValue.HasValue)
 				return Negotiate.WithStatusCode(HttpStatusCode.BadRequest);
@@ -48,46 +52,6 @@ namespace OrderService
 			_orderRepository.UpdateOrder(inputOrder.Id, inputOrder.State);
 
 			return Negotiate.WithStatusCode(HttpStatusCode.OK);
-		}
-
-		OrderState? GetStateFromFilter()
-		{
-			var filter = Request.Query["$filter"];
-
-			if (string.IsNullOrWhiteSpace(filter))
-				return null;
-
-			string strRegex = @"(?<Filter>" +
-							"\n" + @"     (?<Resource>.+?)\s+" +
-							"\n" + @"     (?<Operator>eq|ne|gt|ge|lt|le|add|sub|mul|div|mod)\s+" +
-							"\n" + @"     '?(?<Value>.+?)'?" +
-							"\n" + @")" +
-							"\n" + @"(?:" +
-							"\n" + @"    \s*$" +
-							"\n" + @"   |\s+(?:or|and|not)\s+" +
-							"\n" + @")" +
-							"\n";
-
-			Regex myRegex = new Regex(strRegex, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
-
-			string strReplace = @"${Value}";
-
-			var resource = myRegex.Replace(filter, "${Resource}");
-			var op = myRegex.Replace(filter, "${Operator}");
-			var value = myRegex.Replace(filter, "${Value}");
-
-			if (!string.Equals(resource, "State", StringComparison.InvariantCultureIgnoreCase) || 
-							!string.Equals(op, "eq", StringComparison.InvariantCultureIgnoreCase))
-				return null;
-
-			OrderState enumValue;
-
-			var valid = Enum.TryParse(value, true, out enumValue);
-
-			if (!valid)
-				return null;
-
-			return enumValue;
 		}
 	}
 }

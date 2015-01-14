@@ -66,11 +66,14 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMapper.cs" />
     <Compile Include="InMemoryOrderRepository.cs" />
     <Compile Include="IOrderRepository.cs" />
+    <Compile Include="NancyBootstrapper.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderModule.cs" />
     <Compile Include="OrderNotFoundException.cs" />
+    <Compile Include="OrderStateMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
