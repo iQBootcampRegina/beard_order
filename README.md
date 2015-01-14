@@ -9,6 +9,7 @@ Beard Order Service README
 - Filtering
 	- By state
 	ex) $filter=State eq 'New'
+- Add orders to make stuff happen and just don't worry about it!
 
 
 
