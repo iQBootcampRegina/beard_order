@@ -33,12 +33,15 @@ namespace OrderService
 
 		object GetOrderById(int id)
 		{
-			var match = _orderRepository.GetOrderById(id);
-
-			if (match == null)
-				return Negotiate.WithStatusCode(HttpStatusCode.NotFound);
-
-			return match;
+			return new Order() {CustomerName = "stuff"};
+//
+//			var match = _orderRepository.GetOrderById(id);
+//
+//			if (match == null)
+//				return Negotiate.WithStatusCode(HttpStatusCode.NotFound)
+//								.WithModel(new { Message = "Not Found"});
+//
+//			return match;
 		}
 
 		object GetOrders()
