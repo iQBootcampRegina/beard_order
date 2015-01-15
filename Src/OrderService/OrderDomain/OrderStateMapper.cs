@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace OrderService
+namespace OrderService.OrderDomain
 {
 	public class OrderStateMapper : IMapper<string, OrderState?>
 	{

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace OrderService
+namespace OrderService.OrderDomain
 {
 	public interface IOrderRepository
 	{

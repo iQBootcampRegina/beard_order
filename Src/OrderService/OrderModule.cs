@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Nancy;
 using Nancy.ModelBinding;
+using OrderService.OrderDomain;
 
 namespace OrderService
 {

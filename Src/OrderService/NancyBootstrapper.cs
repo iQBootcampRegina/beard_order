@@ -1,5 +1,6 @@
 ﻿using Nancy;
 using Nancy.TinyIoc;
+using OrderService.OrderDomain;
 
 namespace OrderService
 {

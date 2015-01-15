@@ -1,4 +1,4 @@
-﻿namespace OrderService
+﻿namespace OrderService.OrderDomain
 {
 	public interface IMapper<in TIn, out TOut>
 	{

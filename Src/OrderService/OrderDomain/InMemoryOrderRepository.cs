@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace OrderService
+namespace OrderService.OrderDomain
 {
 	public class InMemoryOrderRepository : IOrderRepository
 	{

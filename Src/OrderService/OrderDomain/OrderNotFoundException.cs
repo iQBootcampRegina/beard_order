@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OrderService
+namespace OrderService.OrderDomain
 {
 	public class OrderNotFoundException : Exception
 	{
