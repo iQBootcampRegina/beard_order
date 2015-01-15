@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using Nancy;
+﻿using Nancy;
 using Nancy.ModelBinding;
 using OrderService.OrderDomain;
 
@@ -33,15 +31,12 @@ namespace OrderService
 
 		object GetOrderById(int id)
 		{
-			return new Order() {CustomerName = "stuff"};
-//
-//			var match = _orderRepository.GetOrderById(id);
-//
-//			if (match == null)
-//				return Negotiate.WithStatusCode(HttpStatusCode.NotFound)
-//								.WithModel(new { Message = "Not Found"});
-//
-//			return match;
+			var match = _orderRepository.GetOrderById(id);
+
+			if (match == null)
+				return Negotiate.WithStatusCode(HttpStatusCode.NotFound);
+
+			return match;
 		}
 
 		object GetOrders()
