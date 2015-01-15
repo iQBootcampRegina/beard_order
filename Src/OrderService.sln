@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "OrderService/OrderService.csproj", "{2F137B51-33BC-4EC3-AD04-671B4F5903C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "OrderService\OrderService.csproj", "{2F137B51-33BC-4EC3-AD04-671B4F5903C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderMessaging", "OrderMessaging\OrderMessaging.csproj", "{B2E1A4EB-9F8D-4175-BD0D-83A03E7CF1B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +15,15 @@ Global
 		{2F137B51-33BC-4EC3-AD04-671B4F5903C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F137B51-33BC-4EC3-AD04-671B4F5903C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F137B51-33BC-4EC3-AD04-671B4F5903C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E1A4EB-9F8D-4175-BD0D-83A03E7CF1B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E1A4EB-9F8D-4175-BD0D-83A03E7CF1B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E1A4EB-9F8D-4175-BD0D-83A03E7CF1B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E1A4EB-9F8D-4175-BD0D-83A03E7CF1B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\TransientFaultHandling.Core.5.1.1209.1\lib\NET4
 	EndGlobalSection
 EndGlobal

@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using IQ.Foundation.Messaging;
+using OrderMessaging;
 
 namespace OrderService.OrderDomain
 {
 	public class InMemoryOrderRepository : IOrderRepository
 	{
+		readonly IPublishMessages _messagePublisher;
 		readonly IList<Order> _orders;
 
-		public InMemoryOrderRepository()
+		public InMemoryOrderRepository(IPublishMessages messagePublisher)
 		{
+			_messagePublisher = messagePublisher;
 			_orders = new List<Order>();
 		}
 
@@ -48,6 +52,9 @@ namespace OrderService.OrderDomain
 			var match = GetOrderById(id);
 
 			match.State = state;
+
+			if(match.State == OrderState.Shipped)
+				_messagePublisher.Publish(new OrderCompleted());
 		}
 	}
 }

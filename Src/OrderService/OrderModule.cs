@@ -34,7 +34,8 @@ namespace OrderService
 			var match = _orderRepository.GetOrderById(id);
 
 			if (match == null)
-				return Negotiate.WithStatusCode(HttpStatusCode.NotFound);
+				return Negotiate.WithStatusCode(HttpStatusCode.NotFound)
+								.WithModel(new { Message = "Not Found"});
 
 			return match;
 		}
