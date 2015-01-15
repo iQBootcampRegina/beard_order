@@ -9,15 +9,18 @@ namespace OrderService
 		readonly IOrderRepository _orderRepository;
 		readonly IMapper<string, OrderState?> _orderStateMapper;
 
+		const string MANY_PATH = "/orders";
+		const string SINGLE_PATH = "/orders/{id}";
+
 		public OrderModule(IOrderRepository orderRepository, IMapper<string, OrderState?> orderStateMapper)
 		{
 			_orderRepository = orderRepository;
 			_orderStateMapper = orderStateMapper;
 
-			Post["/orders"] = x => CreateOrder();
-			Get["/orders/{id}"] = x => GetOrderById(x.id);
-			Get["/orders"] = x => GetOrders();
-			Put["/orders/{id}"] = x => UpdateOrder();
+			Post[MANY_PATH] = x => CreateOrder();
+			Get[SINGLE_PATH] = x => GetOrderById(x.id);
+			Get[MANY_PATH] = x => GetOrders();
+			Put[SINGLE_PATH] = x => UpdateOrder();
 		}
 
 		object CreateOrder()
@@ -26,7 +29,11 @@ namespace OrderService
 
 			_orderRepository.CreateOrder(inputOrder);
 
-			return Negotiate.WithStatusCode(HttpStatusCode.Created);
+			var location = Request.Url + inputOrder.Id.ToString();
+
+			return Negotiate.WithStatusCode(HttpStatusCode.Created)
+							.WithHeader("Location", location)
+							.WithModel(inputOrder);
 		}
 
 		object GetOrderById(int id)
