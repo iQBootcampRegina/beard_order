@@ -30,7 +30,6 @@ namespace OrderService.OrderDomain
 	{
 		New,
 		InProgress,
-		Shipped,
-		Error
+		Shipped
 	}
 }
