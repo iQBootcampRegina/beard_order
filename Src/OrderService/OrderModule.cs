@@ -29,10 +29,10 @@ namespace OrderService
 
 			_orderRepository.CreateOrder(inputOrder);
 
-			var location = Request.Url + inputOrder.Id.ToString();
+			var locationHeader = Request.Url + inputOrder.Id.ToString();
 
 			return Negotiate.WithStatusCode(HttpStatusCode.Created)
-							.WithHeader("Location", location)
+							.WithHeader("Location", locationHeader)
 							.WithModel(inputOrder);
 		}
 
