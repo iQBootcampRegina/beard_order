@@ -1,7 +1,7 @@
 ﻿using IQ.Foundation.Messaging.AzureServiceBus.Configuration;
 using OrderMessaging;
 
-namespace OrderService
+namespace OrderService.Messaging
 {
 	public class PublisherConfiguration : ConventionServiceBusConfiguration
 	{
@@ -12,7 +12,12 @@ namespace OrderService
 
 		public override string ServiceIdentifier
 		{
-			get { return QueueNames.ORDER_QUEUE_NAME; }
+			get { return TopicNames.OrderNotifications; }
+		}
+
+		protected override bool PublishesMessages
+		{
+			get { return true; }
 		}
 	}
 }

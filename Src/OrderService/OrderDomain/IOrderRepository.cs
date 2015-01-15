@@ -9,6 +9,6 @@ namespace OrderService.OrderDomain
 		Order GetOrderById(int id);
 		IEnumerable<Order> GetOrderByState(OrderState state);
 
-		void UpdateOrder(int id, OrderState state);
+		void UpdateOrder(int id, OrderState newState);
 	}
 }

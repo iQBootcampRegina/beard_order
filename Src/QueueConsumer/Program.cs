@@ -1,6 +1,7 @@
 ﻿using System;
 using IQ.Foundation.Messaging.AzureServiceBus;
 using OrderMessaging;
+using QueueConsumer.Messaging;
 
 namespace QueueConsumer
 {
@@ -10,7 +11,7 @@ namespace QueueConsumer
 		{
 			var servicebusBootstrapper = new DefaultAzureServiceBusBootstrapper(new ConsumerConfiguration());
 
-			servicebusBootstrapper.MessageHandlerRegisterer.Register<ProductQuantitiesChanged>(MessageHandlerFunc);
+			servicebusBootstrapper.MessageHandlerRegisterer.Register<OrderWasShipped>(MessageHandlerFunc);
 
 			servicebusBootstrapper.Subscribe();
 
@@ -18,9 +19,12 @@ namespace QueueConsumer
 			Console.ReadLine();
 		}
 
-		static void MessageHandlerFunc(ProductQuantitiesChanged message)
+		static void MessageHandlerFunc(OrderWasShipped message)
 		{
-			Console.WriteLine(message.Changes.Count);
+			foreach (var productSold in message.ProductsSold)
+			{
+				Console.WriteLine("ProductId {0}, Quantity {1}", productSold.ProductId, productSold.Quantity);
+			}
 		}
 	}
 }

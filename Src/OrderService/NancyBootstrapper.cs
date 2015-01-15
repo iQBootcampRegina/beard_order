@@ -2,6 +2,7 @@
 using IQ.Foundation.Messaging.AzureServiceBus;
 using Nancy;
 using Nancy.TinyIoc;
+using OrderService.Messaging;
 using OrderService.OrderDomain;
 
 namespace OrderService
@@ -14,9 +15,9 @@ namespace OrderService
 
 			var bootstrapper = new DefaultAzureServiceBusBootstrapper(new PublisherConfiguration());
 
-			var messageEnqueuer = bootstrapper.BuildQueueProducer();
+			var messagePublisher = bootstrapper.BuildMessagePublisher();
 
-			container.Register<IEnqueueMessages>(messageEnqueuer);
+			container.Register<IPublishMessages>(messagePublisher);
 			container.Register<IOrderRepository, InMemoryOrderRepository>();
 			container.Register<IMapper<string, OrderState?>, OrderStateMapper>();
 		}

@@ -7,12 +7,12 @@ namespace OrderService.OrderDomain
 {
 	public class InMemoryOrderRepository : IOrderRepository
 	{
-		readonly IEnqueueMessages _enqueueMessages;
+		readonly IPublishMessages _publishMessages;
 		readonly IList<Order> _orders;
 
-		public InMemoryOrderRepository(IEnqueueMessages enqueueMessages)
+		public InMemoryOrderRepository(IPublishMessages publishMessages)
 		{
-			_enqueueMessages = enqueueMessages;
+			_publishMessages = publishMessages;
 			_orders = new List<Order>();
 		}
 
@@ -47,20 +47,28 @@ namespace OrderService.OrderDomain
 			return _orders.Where(x => x.State == state);
 		}
 
-		public void UpdateOrder(int id, OrderState state)
+		public void UpdateOrder(int id, OrderState newState)
 		{
 			var match = GetOrderById(id);
 
-			match.State = state;
+			// If an order is already shipped it cannot be changed
+			if (match.State == OrderState.Shipped)
+				return;
+
+			match.State = newState;
 
 			if (match.State != OrderState.Shipped) return;
 
+			PublishOrderShippedMessage(match);
+		}
 
-			var products = match.Items.Select(x => new ProductQuantityChange {ProductId = x.Id, Quantity = x.Quantity});
+		void PublishOrderShippedMessage(Order match)
+		{
+			var products = match.Items.Select(x => new ProductSold {ProductId = x.Id, Quantity = x.Quantity});
 
-			var message = new ProductQuantitiesChanged {Changes = products.ToList()};
+			var message = new OrderWasShipped {ProductsSold = products.ToList()};
 
-			_enqueueMessages.Enqueue(QueueNames.ORDER_QUEUE_NAME, message);
+			_publishMessages.Publish(message);
 		}
 	}
 }

@@ -1,7 +1,8 @@
-﻿using IQ.Foundation.Messaging.AzureServiceBus.Configuration;
+﻿using System.Collections.Generic;
+using IQ.Foundation.Messaging.AzureServiceBus.Configuration;
 using OrderMessaging;
 
-namespace QueueConsumer
+namespace QueueConsumer.Messaging
 {
 	public class ConsumerConfiguration : ConventionServiceBusConfiguration
 	{
@@ -12,12 +13,12 @@ namespace QueueConsumer
 
 		public override string ServiceIdentifier
 		{
-			get { return QueueNames.ORDER_QUEUE_NAME; }
+			get { return "TestConsoleConsumer"; }
 		}
 
-		protected override bool ConsumesQueue
+		protected override IEnumerable<string> SubscriptionTopics
 		{
-			get { return true; }
+			get { yield return TopicNames.OrderNotifications; }
 		}
 	}
 }
