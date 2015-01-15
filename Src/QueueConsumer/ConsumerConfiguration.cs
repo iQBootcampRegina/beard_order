@@ -1,9 +1,9 @@
 ﻿using IQ.Foundation.Messaging.AzureServiceBus.Configuration;
 using OrderMessaging;
 
-namespace OrderService
+namespace QueueConsumer
 {
-	public class PublisherConfiguration : ConventionServiceBusConfiguration
+	public class ConsumerConfiguration : ConventionServiceBusConfiguration
 	{
 		public override string ConnectionString
 		{
@@ -13,6 +13,11 @@ namespace OrderService
 		public override string ServiceIdentifier
 		{
 			get { return QueueNames.ORDER_QUEUE_NAME; }
+		}
+
+		protected override bool ConsumesQueue
+		{
+			get { return true; }
 		}
 	}
 }

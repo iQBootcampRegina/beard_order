@@ -7,12 +7,12 @@ namespace OrderService.OrderDomain
 {
 	public class InMemoryOrderRepository : IOrderRepository
 	{
-		readonly IPublishMessages _messagePublisher;
+		readonly IEnqueueMessages _enqueueMessages;
 		readonly IList<Order> _orders;
 
-		public InMemoryOrderRepository(IPublishMessages messagePublisher)
+		public InMemoryOrderRepository(IEnqueueMessages enqueueMessages)
 		{
-			_messagePublisher = messagePublisher;
+			_enqueueMessages = enqueueMessages;
 			_orders = new List<Order>();
 		}
 
@@ -53,8 +53,14 @@ namespace OrderService.OrderDomain
 
 			match.State = state;
 
-			if(match.State == OrderState.Shipped)
-				_messagePublisher.Publish(new OrderCompleted());
+			if (match.State != OrderState.Shipped) return;
+
+
+			var products = match.Items.Select(x => new ProductQuantityChange {ProductId = x.Id, Quantity = x.Quantity});
+
+			var message = new ProductQuantitiesChanged {Changes = products.ToList()};
+
+			_enqueueMessages.Enqueue(QueueNames.ORDER_QUEUE_NAME, message);
 		}
 	}
 }

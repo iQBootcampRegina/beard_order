@@ -14,9 +14,9 @@ namespace OrderService
 
 			var bootstrapper = new DefaultAzureServiceBusBootstrapper(new PublisherConfiguration());
 
-			var messagePublisher = bootstrapper.BuildMessagePublisher();
+			var messageEnqueuer = bootstrapper.BuildQueueProducer();
 
-			container.Register<IPublishMessages>(messagePublisher);
+			container.Register<IEnqueueMessages>(messageEnqueuer);
 			container.Register<IOrderRepository, InMemoryOrderRepository>();
 			container.Register<IMapper<string, OrderState?>, OrderStateMapper>();
 		}
